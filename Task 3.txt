@@ -47,6 +47,3 @@ ADDITIONAL CONSIDERATIONS
 3.Group Membership: You can add the user to groups using the -G option in the adduser command. For example, sudo adduser ravi -G backup_agents.
 4.Security: Ensure that the user has only the necessary permissions to perform its tasks. Avoid granting unnecessary privileges.
 
-By following these steps, you will create a user named ravi on App Server 2 with a non-interactive shell, suitable for use by the backup agent tool.
-
-NOTE: Replace appserver2 with the actual hostname or IP address of your server.
