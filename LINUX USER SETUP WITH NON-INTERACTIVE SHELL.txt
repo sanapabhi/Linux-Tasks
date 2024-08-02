@@ -1,5 +1,3 @@
-LINUX USER SETUP WITH NON-INTERACTIVE SHELL
-
 Question:
 To accommodate the backup agent tool's specifications, 
 the system admin team at xFusionCorp Industries requires the creation of a user with a non-interactive shell. 
