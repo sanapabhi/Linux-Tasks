@@ -104,5 +104,3 @@ Efficiency: For a large number of servers, consider using scripting or configura
 Security: Set appropriate permissions for the group and its members.
 Password Policy: Enforce strong password policies for the created user.
 Home Directory: Create the home directory for the user if necessary.
-
-By following these steps, you will have successfully created the nautilus_developers group and added the stark user to it on all specified App servers.
