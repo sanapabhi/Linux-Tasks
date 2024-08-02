@@ -1,0 +1,53 @@
+
+QUESTION:
+In response to the latest tool implementation at xFusionCorp Industries, the system admins require the creation of a service user account. 
+Here are the specifics:
+Create a user named anita in App Server 3 without a home directory.
+
+ANSWER:
+UNDERSTANDING THE TASK:
+Create a user named anita on App Server 3.
+The user should not have a home directory.
+
+ASSUMPTIONS:
+You have SSH access to App Server 3.
+You have root or sudo privileges on App Server 3.
+The underlying operating system is Linux (most common for servers).
+
+Command:
+
+#useradd -M anita
+
+EXPLANATION:
+
+useradd: This command is used to create a new user account.
+-M: This option specifies that no home directory should be created for the user.
+anita: This is the name of the user to be created.
+
+EXAMPLE:
+
+SSH into App Server 3 as a user with sudo privileges or directly as root.
+Execute the command:
+
+#sudo useradd -M anita
+
+Replace sudo with su - if you're logged in as a regular user and want to switch to root.
+
+VERIFICATION:
+
+To verify that the user has been created without a home directory, you can check the /etc/passwd file:
+
+#cat /etc/passwd | grep anita
+
+This should output a line similar to:
+
+anita:x:1001:1001::/dev/null:/bin/false
+
+Note the /dev/null in the home directory field, indicating no home directory.
+
+ADDITIONAL CONSIDERATIONS:
+
+Password: You might need to set a password for the user using the passwd command.
+Group Membership: If the user needs to belong to specific groups, use the -G option with the useradd command.
+Shell: To specify a different shell for the user, use the -s option with the useradd command.
+Security: Consider the security implications of creating a user without a home directory. Ensure that the user has appropriate permissions and access controls.
