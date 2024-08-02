@@ -46,4 +46,3 @@ ADDITIONAL CONSIDERATIONS
 2.Home Directory: The default home directory for the user will be created in /home/ravi. You can specify a different location using the -d option in the adduser command.
 3.Group Membership: You can add the user to groups using the -G option in the adduser command. For example, sudo adduser ravi -G backup_agents.
 4.Security: Ensure that the user has only the necessary permissions to perform its tasks. Avoid granting unnecessary privileges.
-
