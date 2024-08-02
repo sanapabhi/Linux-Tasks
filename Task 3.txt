@@ -1,0 +1,52 @@
+LINUX USER SETUP WITH NON-INTERACTIVE SHELL
+
+Question:
+To accommodate the backup agent tool's specifications, 
+the system admin team at xFusionCorp Industries requires the creation of a user with a non-interactive shell. 
+Here's your task:
+
+ANSWER:
+Understanding the Task - 
+We need to create a user named ravi on App Server 2 with a non-interactive shell. 
+This means the user will not be able to log in interactively, but can still be used by system services or scripts.
+
+STEPS INVOLVED
+
+Log in to App Server 2 as a user with sudo privileges. This is typically the root user or a user in the sudo group.
+Create the user using the adduser command. The -s option specifies the shell.
+Verify the user creation using the id command.
+
+COMMANDS AND EXAMPLE
+
+# Log in to App Server 2 as root or a sudo user
+ssh root@appserver2
+
+# Create the user ravi with a non-interactive shell
+sudo adduser ravi -s /sbin/nologin
+
+# Verify the user creation
+sudo id ravi
+
+EXPLANATION OF COMMANDS
+
+1.ssh root@appserver2: This command establishes a secure shell connection to App Server 2 as the root user. 
+Replace root with your username if you're using a different user.
+
+2.sudo adduser ravi -s /sbin/nologin:
+sudo: Executes the command with superuser privileges.
+adduser ravi: Creates a new user named ravi.
+-s /sbin/nologin: Sets the shell for the user to /sbin/nologin, which prevents interactive logins.
+
+3.sudo id ravi: Displays user and group information for the user ravi. 
+This command can be used to verify if the user was created successfully and if the shell is set correctly.
+
+ADDITIONAL CONSIDERATIONS
+
+1.Password: The adduser command will prompt you for a password for the user. This is optional for non-interactive users but recommended for security purposes.
+2.Home Directory: The default home directory for the user will be created in /home/ravi. You can specify a different location using the -d option in the adduser command.
+3.Group Membership: You can add the user to groups using the -G option in the adduser command. For example, sudo adduser ravi -G backup_agents.
+4.Security: Ensure that the user has only the necessary permissions to perform its tasks. Avoid granting unnecessary privileges.
+
+By following these steps, you will create a user named ravi on App Server 2 with a non-interactive shell, suitable for use by the backup agent tool.
+
+NOTE: Replace appserver2 with the actual hostname or IP address of your server.
