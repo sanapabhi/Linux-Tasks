@@ -1,4 +1,3 @@
-
 QUESTION:
 In response to the latest tool implementation at xFusionCorp Industries, the system admins require the creation of a service user account. 
 Here are the specifics:
