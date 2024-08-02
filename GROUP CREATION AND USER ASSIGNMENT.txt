@@ -1,0 +1,108 @@
+Question:
+
+The system admin team at xFusionCorp Industries has streamlined access management by implementing group-based access control. Here's what you need to do:
+
+
+a. Create a group named nautilus_developers across all App servers within the Stratos Datacenter.
+b. Add the user stark into the nautilus_developers group on all App servers. If the user doesn't exist, create it as well.
+
+Answer:
+
+Understanding the Task
+Create a group named nautilus_developers on all App servers.
+Add user stark to this group on all App servers. If stark doesn't exist, create it.
+
+
+Assumptions
+You have SSH access to all App servers.
+You have the necessary permissions to create users and groups.
+
+
+Step-by-Step Solution
+Step 1: Access Each App Server
+Establish an SSH connection to each App server in the Stratos Datacenter.
+
+Step 2: Create the Group
+On each App server, create the group nautilus_developers using the groupadd command:
+
+#sudo groupadd nautilus_developers
+
+Step 3: Create or Add User to Group
+On each App server, check if user stark exists:
+
+#id stark &> /dev/null
+
+
+##If the command returns an error (exit code 1), the user doesn't exist.
+If the command is silent, the user exists.##
+
+If the user doesn't exist, create it:
+
+
+#sudo useradd stark
+
+
+Add the user stark to the nautilus_developers group:
+
+#sudo usermod -aG nautilus_developers stark
+
+
+Example
+Assuming you have three App servers named appserver1, appserver2, and appserver3, here's how you would execute the commands on each server:
+
+ON APPSERVER1:
+
+
+ssh user@appserver1
+sudo su -
+groupadd nautilus_developers
+id stark &> /dev/null
+if [ $? -eq 1 ]; then
+  useradd stark
+fi
+usermod -aG nautilus_developers stark
+
+
+ON APPSERVER2:
+
+
+ssh user@appserver2
+sudo su -
+groupadd nautilus_developers
+id stark &> /dev/null
+if [ $? -eq 1 ]; then
+  useradd stark
+fi
+usermod -aG nautilus_developers stark
+
+
+ON APPSERVER3:
+
+
+ssh user@appserver3
+sudo su -
+groupadd nautilus_developers
+id stark &> /dev/null
+if [ $? -eq 1 ]; then
+  useradd stark
+fi
+usermod -aG nautilus_developers stark
+
+
+EXPLANATION
+
+ssh user@appserverX: Connects to the specified App server.
+sudo su -: Switches to root or equivalent user.
+groupadd nautilus_developers: Creates the group nautilus_developers.
+id stark &> /dev/null: Checks if user stark exists.
+if [ $? -eq 1 ]; then useradd stark; fi: Creates user stark if it doesn't exist.
+usermod -aG nautilus_developers stark: Adds stark to the nautilus_developers group.
+
+ADDITIONAL CONSIDERATIONS
+
+Efficiency: For a large number of servers, consider using scripting or configuration management tools to automate the process.
+Security: Set appropriate permissions for the group and its members.
+Password Policy: Enforce strong password policies for the created user.
+Home Directory: Create the home directory for the user if necessary.
+
+By following these steps, you will have successfully created the nautilus_developers group and added the stark user to it on all specified App servers.
