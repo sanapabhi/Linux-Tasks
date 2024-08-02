@@ -72,10 +72,6 @@ Security: Implement strong password policies and consider using a password manag
 Permissions: Set appropriate permissions for the home directory and its contents.
 
 
-By following these steps, you will have successfully created 
-a custom Apache user named ravi with the specified UID and home directory on App Server 3.
-
-
 
 
 
