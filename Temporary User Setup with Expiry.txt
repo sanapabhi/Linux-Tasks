@@ -1,0 +1,125 @@
+QUESTION:
+
+As part of the temporary assignment to the Nautilus project, a developer named ammar requires access for a limited duration. 
+To ensure smooth access management, a temporary user account with an expiry date is needed. Here's what you need to do:
+
+CREATE A USER NAMED AMMAR ON APP SERVER 3 IN STRATOS DATACENTER. SET THE EXPIRY DATE TO 2023-12-07, ENSURING THE USER IS CREATED IN LOWERCASE AS PER STANDARD PROTOCOL.
+
+ANSWER:
+
+UNDERSTANDING THE TASK:
+
+Create a temporary user account named 'ammar' on App Server 3 in Stratos Datacenter.
+Set the account expiry date to 2023-12-07.
+Ensure the username is in lowercase.
+
+ASSUMPTIONS:
+
+You have SSH access to App Server 3 as a user with administrative privileges.
+The underlying operating system is Linux-based (e.g., Ubuntu, CentOS).
+
+ASSUMPTIONS:
+
+You have SSH access to App Server 3 as a user with administrative privileges.
+The underlying operating system is Linux-based (e.g., Ubuntu, CentOS).
+
+#useradd -m -d /home/ammar -s /bin/bash -e 2023-12-07 ammar
+
+Let's break down the command:
+
+useradd: The command to create a new user account.
+-m: Creates the home directory for the user.
+-d /home/ammar: Specifies the home directory location for the user.
+-s /bin/bash: Sets the default shell for the user to Bash.
+-e 2023-12-07: Sets the expiry date for the account.
+ammar: The username to be created.
+
+ADDITIONAL CONSIDERATIONS:
+
+Password: You'll need to set a password for the user using the passwd command:
+
+#passwd ammar
+
+1.Group Membership: If the user needs to belong to specific groups, use the -G option in useradd.
+2.Verification: After creating the user, verify the expiry date using the chage command:
+
+#chage -l ammar
+
+##chage -l username: Displays detailed information about a user's password aging settings, 
+including the last password change date, minimum and maximum password ages, password expiration date, and account expiration date.##
+
+e.g.,
+Output:
+
+[root@stapp03 banner]# chage -l ammar
+Last password change                                    : Aug 04, 2024
+Password expires                                        : never
+Password inactive                                       : never
+Account expires                                         : Dec 07, 2023
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 99999
+Number of days of warning before password expires       : 7
+--------------------------------------------------------------------------------------------------------------
+3.Security: Consider additional security measures like password complexity requirements and account lockout policies.
+
+#-----------------------------------------------------------------------------------------------------------------------#
+EXAMPLE:
+
+Assuming you're logged in to App Server 3 as a user with administrative privileges, you would execute the following commands:
+
+#useradd -m -d /home/ammar -s /bin/bash -e 2023-12-07 ammar
+#passwd ammar
+#chage -l ammar
+
+#------------------------------------------------------------------------------------------------------------------------#
+
+NOTE:
+
+The expiry date provided in the prompt (2023-12-07) has already passed. Please replace it with the desired expiry date.
+Ensure that the specified home directory and shell path exist and are accessible.
+For enhanced security, consider using a password manager or generating strong, random passwords.
+
+############################################################################################################################################################
+
+EXTRA DETAILS of CHAGE:
+
+chage Command: Managing User Password Expiration
+
+The chage command is a powerful tool used to manage user password expiration policies on Linux systems. 
+It allows system administrators to control when passwords expire, how often they must be changed, and even when a user account becomes inactive.
+
+
+COMMON USES OF CHAGE:
+
+1.Viewing password aging information:
+#chage -l username: Displays detailed information about a user's password aging settings, 
+including the last password change date, minimum and maximum password ages, password expiration date, and account expiration date.
+
+2.Setting password expiration date:
+#chage -E YYYY-MM-DD username: Sets the password expiration date for a user.
+
+3.Setting minimum and maximum password ages:
+#chage -m min_days -M max_days username: Sets the minimum and maximum number of days between password changes.
+
+4.Setting password inactive period:
+chage -I inactive_days username: Specifies the number of days after password expiration before the account becomes inactive.
+
+5.Locking and unlocking user accounts:
+#chage -L username: Locks a user account.
+#chage -U username: Unlocks a user account.
+
+Example.,
+To set a password to expire in 90 days, require a password change every 30 days, and set a minimum password age of 7 days for user 'john', you would use:
+
+#chage -E `date +%Y-%m-%d -d "90 days"` -m 7 -M 30 john
+
+
+############################################################################################################################################################
+
+IMPORTANT CONSIDERATIONS:
+
+1.Security: Enforcing strong password policies through chage is crucial for system security.
+2.User convenience: Be mindful of user experience when setting password expiration and change requirements.
+3.System administration: Regular review and updates of password policies are essential.
+
+############################################################################################################################################################
