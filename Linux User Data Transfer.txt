@@ -1,0 +1,165 @@
+QUESTION:
+
+Due to an accidental data mix-up, user data was unintentionally mingled on Nautilus App Server 1 at the /home/usersdata location by the Nautilus production support team in Stratos DC. 
+To rectify this, specific user data needs to be filtered and relocated. Here are the details:
+
+Locate all files (excluding directories) owned by user rose within the /home/usersdata directory on App Server 1. 
+Copy these files while preserving the directory structure to the /official directory.
+
+ANSWER:
+
+UNDERSTANDING THE TASK:
+
+We need to find all regular files owned by user 'rose' within the '/home/usersdata' directory on App Server 1.
+These files need to be copied to the '/official' directory while maintaining their original directory structure.
+
+SOLUTION:
+
+We can achieve this using a combination of find and cp commands.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+COMMAND:
+
+#ssh user@appserver1
+#sudo su - .....................................# Switch to root user (or use sudo for specific commands)
+#cd /home/usersdata ............................# Navigate to the source directory
+#find . -user rose -type f -exec cp --parents {} /official \;
+
+OR
+
+#ssh user@appserver1
+#sudo find /home/usersdata -user rose -type f -exec cp --parents {} /official \;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+EXPLANATION:
+
+find /home/usersdata: Starts searching from the '/home/usersdata' directory.
+-user rose: Specifies that we're looking for files owned by user 'rose'.
+-type f: Limits the search to regular files (excluding directories).
+-exec cp --parents {} /official \;: For each found file:
+--parents: Preserves the directory structure during the copy operation.
+{}: Represents the current file found by find.
+/official: Specifies the destination directory.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ADDITIONAL CONSIDERATIONS:
+
+1.Permissions: Ensure the target directory ('/official') exists and has appropriate permissions for the copy operation.
+2.Large Datasets: For large datasets, consider using rsync for efficiency and additional features.
+3.Error Handling: Implement error handling mechanisms to handle potential issues during the copy process.
+4.Verification: After the operation, verify that the files have been copied correctly and the original data remains intact.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+SECURITY NOTE:
+
+Exercise caution when running commands with sudo or as the root user. Incorrect usage can have serious consequences.
+Consider using more restrictive permissions for the find command if applicable to enhance security.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+###ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED-ERROR IF YOU FACED###
+
+{{{IF: No files were copied or some of them are missing! on App Server 1}}}
+
+TROUBLESHOOTING THE COPY ISSUE
+
+Understanding the Problem:
+No files were copied or some files are missing from App Server 1 to the '/official' directory.
+
+
+1.Permissions:
+
+The user running the command might not have sufficient permissions to access or modify the source or destination directories.
+The destination directory might not have the correct permissions to allow file creation.
+
+2.File System Issues:
+
+Disk space might be full on the target server.
+File system errors or corruption might prevent file creation.
+
+3.Command Execution Errors:
+
+Syntax errors in the command might prevent it from working correctly.
+Issues with the find or cp commands could cause failures.
+
+4.Network Issues:
+
+IF COPYING FILES ACROSS A NETWORK, NETWORK CONNECTIVITY OR PERFORMANCE ISSUES MIGHT INTERFERE.
+
+
+@TROUBLESHOOTING STEPS:
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1.CHECK PERMISSIONS:
+
+Verify that the user running the command has read permissions on the source directory ('/home/usersdata') and write permissions on the destination directory ('/official').
+Use ls -ld /home/usersdata and ls -ld /official to check permissions.
+If necessary, adjust permissions using chmod or chown.
+
+#ls -ld /home/usersdata
+#ls -ld /beta
+
+#chomod 777 /home/usersdata
+#chmod 777 /official
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2.CHECK DISK SPACE:
+
+Ensure there is sufficient disk space on the target server ('/official' directory).
+Use df -h to check disk usage.
+
+#df -h /beta
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+3.VERIFY COMMAND SYNTAX:
+
+Double-check the command for any typos or errors.
+Test the command on a small subset of files to isolate the issue.
+
+#touch /beta/testfile
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+4.CHECK FOR FILE SYSTEM ISSUES:
+
+Run file system checks like fsck to identify and repair any errors.
+
+#fsck /dev/sda1  # Replace /dev/sda1 with the correct device
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+5.TEST NETWORK CONNECTIVITY:
+
+If copying files over a network, verify network connectivity and performance.
+
+6.USE RSYNC FOR ROBUSTNESS:
+
+Consider using rsync for its features like error handling, progress reporting, and efficiency.
+
+*****************************************************************************************************************************************************
+Revised Command with Error Handling:
+
+#find /home/usersdata -user rose -type f -exec cp --parents {} /official \; &> copy_log.txt
+
+*****************************************************************************************************************************************************
+
+This command redirects both standard output and error to a log file named copy_log.txt for later analysis.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Example:
+
+#sudo su -
+#cd /home/usersdata
+#find . -user rose -type f -exec cp --parents {} /official \; &> copy_log.txt
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Additional Tips:
+
+Use -v option with cp to see detailed output of the copy process.
+Consider using xargs with cp for better performance with large numbers of files.
+If the issue persists, provide more details about the environment, error messages, and file sizes.
