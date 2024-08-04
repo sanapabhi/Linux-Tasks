@@ -1,0 +1,110 @@
+QUESTION:
+
+Within the Stratos DC, the Nautilus storage server hosts a directory named /data, serving as a repository for various developers non-confidential data. 
+Developer james has requested a copy of their data stored in /data/james. The System Admin team has provided the following steps to fulfill this request:
+
+a. Create a compressed archive named james.tar.gz of the /data/james directory.
+b. Transfer the archive to the /home directory on the Storage Server.
+
+ANSWER:
+Understanding the Task
+
+We need to:
+1. At first login on storage server  & Switch to  root user 
+e.g.,
+ssh natasha@ststor01  .......................{natasha:user, ststor01:storage server}
+
+The authenticity of host 'ststor01 (172.16.238.15)' can't be established.
+ED25519 key fingerprint is SHA256:uldyq9trN/RGcdtqTLlMulRnvJ57LEEZ1iuflVDvKpk.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+
+natasha@ststor01's password:Bl@kW
+
+2. Login to root user
+[natasha@ststor01 ~]$ sudo su
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+3.Create a compressed archive of the /data/james directory named james.tar.gz.
+
+4.Move this archive to the /home directory on the same server.
+
+Step 1: Creating the Compressed Archive
+The command to create a compressed archive using the tar utility is:
+
+#tar czvf filename.tar.gz directory_to_compress
+
+```````````````````````````````````````````````````````````
+c: Create a new archive
+z: Compress the archive using gzip
+v: Verbose output (shows files being added)
+f: Specifies the output filename
+```````````````````````````````````````````````````````````
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+In our case, the command would be:
+
+#tar czvf james.tar.gz /data/james
+output:
+	tar: Removing leading `/' from member names
+	/data/james/
+	/data/james/nautilus2.txt
+	/data/james/nautilus3.txt
+	/data/james/nautilus1.txt
+
+This will create a file named james.tar.gz in the current directory, containing the contents of the /data/james directory compressed using gzip.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Step 2: Moving the Archive to the /home Directory
+The command to move a file is:
+
+#mv source_file destination_directory
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+In our case, the command would be:
+
+#mv james.tar.gz /home
+
+This will move the james.tar.gz file to the /home directory.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Complete Example
+
+Assuming you are logged in as a user with the necessary permissions:
+$sudo su 
+
+# ls -ld /data/
+output:
+	drwxrwxrwx 3 root root 4096 Aug  4 18:07 /data/
+	
+#cd /data  # Navigate to the /data directory
+
+#tar czvf james.tar.gz james  # Create the compressed archive
+output:
+	tar: Removing leading `/' from member names
+	/data/james/
+	/data/james/nautilus2.txt
+	/data/james/nautilus3.txt
+	/data/james/nautilus1.txt
+
+#mv james.tar.gz /home  # Move the archive to /home
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Additional Considerations
+
+Permissions: Ensure you have the necessary permissions to read the /data/james directory and write to the /home directory.
+Disk Space: Verify that there is sufficient disk space in the /home directory to accommodate the compressed archive.
+Efficiency: For large directories, consider using more efficient compression algorithms like bzip2 or xz by replacing z with j or J in the tar command.
+Ownership and Permissions: The ownership and permissions of the archive will be the same as the original files. You might need to adjust these after moving the archive.
+
+Note: The specific commands and locations might vary depending on the exact configuration of your system.
