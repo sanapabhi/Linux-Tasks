@@ -1,0 +1,106 @@
+QUESTION:
+Following security audits, the xFusionCorp Industries security team has rolled out new protocols, including the restriction of direct root SSH login.
+
+Your task is to disable direct SSH root login on all app servers within the Stratos Datacenter.
+
+
+ANSWER:
+
+UNDERSTANDING THE TASK:
+
+Disable direct root SSH login on all app servers within the Stratos Datacenter.
+
+ASSUMPTIONS:
+
+You have administrative privileges on all app servers.
+All app servers are running a Linux-based operating system (common in datacenter environments).
+You have a method to identify and access all app servers within the Stratos Datacenter (e.g., inventory management system, IP address list).
+
+STEPS:
+
+1.ACCESS EACH APP SERVER:
+
+Use SSH with a non-root account that has sudo privileges to log in to each app server.
+
+e.g.,
+
+1.#ssh tony@stapp01  .........................................{ AppServer1 }
+2.#ssh steve@stapp02 .........................................{ AppServer2 }
+3.#ssh banner@stapp03 ........................................{ AppServer3 }
+
+2.EDIT THE SSH CONFIGURATION FILE on each app server:
+
+#sudo nano /etc/ssh/sshd_config
+
+OR
+
+#sudo dnf install vim -y
+
+#sudo vim /etc/ssh/sshd_config
+
+or
+
+#sudo vi /etc/ssh/sshd_config
+
+e.g.,
+Output:
+#Authentication:
+#LoginGraceTime 2m
+PermitRootLogin no ..................{{PermitRootLogin yes its default in file you have to change it to PermitRootLogin no.}}
+#StrictModes yes
+#MaxAuthTries 6
+#MaxSessions 10 
+-- INSERT --
+
+##########Locate the line PermitRootLogin yes and change it to PermitRootLogin no.##########
+##########If the line is commented out (starts with #), uncomment it first.##########
+
+3.RESTART THE SSH SERVICE:
+
+Apply the changes by restarting the SSH service:
+
+#sudo systemctl restart sshd ..................{ Apply This command each and every app server after changes in /etc/ssh/sshd_config file }
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Example: perform on AppServer1
+
+Assuming you have a non-root account named 'admin' with sudo privileges, and you're logged in to an app server named 'appserver1':
+
+#ssh tony@stapp01
+passwoed:Ir0nM@n 
+
+
+1.Edit the SSH configuration file
+#sudo nano /etc/ssh/sshd_config
+OR
+#sudo vim /etc/ssh/sshd_config
+OR
+#sudo vi /etc/ssh/sshd_config
+
+# Find the line PermitRootLogin yes and change it to no
+# Save the file and exit nano
+
+2.Restart the SSH service
+#sudo systemctl restart sshd
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ADDITIONAL CONSIDERATIONS:
+
+1.Security: Disabling root SSH login is a good security practice, but it's essential to have alternative methods for administrative tasks. Consider using sudo with specific user accounts or implementing key-based authentication.
+2.Automation: If you have many app servers, consider using scripting or configuration management tools (like Ansible, Puppet, or Chef) to automate the process.
+3.Verification: After making changes, verify that root SSH login is disabled by trying to log in as root.
+4.Documentation: Document the changes made for future reference and troubleshooting.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+IMPORTANT NOTE:
+
+Always test these changes in a non-production environment first to ensure it doesn't disrupt services.
+Consider using a configuration management tool for large-scale deployments to maintain consistency.
+Implement additional security measures like SSH key-based authentication and strong password policies.
+
+
+
+
+
