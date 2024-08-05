@@ -1,0 +1,83 @@
+QUESTION:
+After conducting a security audit within the Stratos DC, the Nautilus security team discovered misconfigured permissions on critical files. 
+To address this, corrective actions are being taken by the production support team. 
+Specifically, the file named /etc/hostname on Nautilus App 1 server requires adjustments to its Access Control Lists (ACLs) as follows:
+
+1. The file's user owner and group owner should be set to root.
+
+2. Others should possess read only permissions on the file.
+
+3. User james must not have any permissions on the file.
+
+4. User jerome should be granted read only permission on the file.
+
+ANSWER:
+
+Prerequisites
+
+SSH access to the Nautilus App 1 server as root or a user with sudo privileges.
+Basic understanding of Linux file permissions and ACLs.
+e.g.,
+#ssh tony@stapp01
+password:Ir0nM@n
+
+STEPS AND COMMANDS
+
+1.Check Current Permissions and Ownership
+Before making any changes, it's essential to verify the current state of the file.
+
+>CHECK OWNERSHIP
+#ls -l /etc/hostname
+
+>CHECK ACLS (IF SUPPORTED BY YOUR SYSTEM)
+#getfacl /etc/hostname
+
+2. CHANGE OWNERSHIP TO ROOT
+
+#chown root:root /etc/hostname
+
+3.SET BASIC PERMISSIONS
+
+While not strictly necessary for this task, it's good practice to set basic permissions as well. 
+This ensures that the file is accessible to the owner and group.
+
+#chmod 644 /etc/hostname
+
+This sets permissions to read and write for the owner, read only for the group, and read only for others.
+
+4.MODIFY ACLS
+
+To achieve the specific requirements for users james and jerome, we'll use the setfacl command:
+
+>REMOVE ALL ACL ENTRIES FOR THE FILE
+#setfacl -b /etc/hostname
+
+>GRANT READ PERMISSION TO OTHERS
+#setfacl -m o:r /etc/hostname
+
+>DENY ALL PERMISSIONS FOR USER JAMES
+#setfacl -m u:james:--- /etc/hostname
+
+>GRANT READ PERMISSION TO USER JEROME
+#setfacl -m u:jerome:r /etc/hostname
+
+EXPLANATION OF COMMANDS:
+
+setfacl -b /etc/hostname: Removes all existing ACL entries from the file.
+setfacl -m o:r /etc/hostname: Grants read permission to others (users not explicitly mentioned).
+setfacl -m u:james:--- /etc/hostname: Denies all permissions for user james.
+setfacl -m u:jerome:r /etc/hostname: Grants read permission to user jerome.
+
+5. Verify Changes
+
+getfacl /etc/hostname
+
+This command will show the updated ACLs for the file.
+
+=====================================================================================================================================================
+ADDITIONAL CONSIDERATIONS
+
+ACL Support: Ensure your Linux distribution supports ACLs. If not, you might need to use alternative methods like file ownership and group permissions.
+Security Best Practices: While this addresses the specific requirements, consider additional security measures like file integrity monitoring and regular ACL reviews.
+Testing: After making changes, it's essential to test the file's accessibility for different users to ensure the desired behavior.
+By following these steps and commands, you should successfully configure the ACLs for the /etc/hostname file as required.
