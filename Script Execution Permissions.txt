@@ -1,0 +1,82 @@
+QUESTION:
+In a bid to automate backup processes, the xFusionCorp Industries sysadmin team has developed a new bash script named xfusioncorp.sh. 
+While the script has been distributed to all necessary servers, it lacks executable permissions on App Server 1 within the Stratos Datacenter.
+
+Your task is to grant executable permissions to the /tmp/xfusioncorp.sh script on App Server 1. 
+Additionally, ensure that all users have the capability to execute it.
+
+
+ANSWER:
+
+Granting Execute Permissions to xfusioncorp.sh
+Here's how to grant executable permissions to the /tmp/xfusioncorp.sh script on App Server 1, allowing all users to execute it:
+
+1.Connect to App Server 1
+
+Use SSH or another remote access tool to connect to App Server 1. You'll need administrative privileges for this task.
+e.g.,
+#ssh tony@stapp01
+password:Ir0nM@n
+
+2.Change directory to /tmp
+
+Use the cd command to navigate to the /tmp directory where the script resides:
+
+#cd /tmp
+
+3.Grant Execute Permissions with chmod
+
+Use the chmod command with the +x option to add the execute permission for all users (owner, group, and others) to the script:
+
+#chmod +x xfusioncorp.sh
+or 
+#chmod 777 xFusionCorp.sh ...................( If you have to give ALL RWX access to user/file/other )
+
+Explanation:
+
+	chmod: The command used to change file permissions.
+	+x: This option adds the execute permission.
+	xfusioncorp.sh: The filename you're modifying.
+	777:Full access of Read, Write,& Exrcute.
+This command will modify the permissions of the script, granting read, write, and execute access for the owner, group, and others.
+
+4.Verify Permissions (Optional)
+
+Use the ls -l command to verify the updated permissions:
+
+#ls -l xfusioncorp.sh
+
+Output Example:
+
+	-rwxrwxrwx 1 user groupname size date xfusioncorp.sh
+	-rwxrwxrwx: This indicates the permissions:
+	rwx: Read, write, and execute permissions for owner (user)
+	rwx: Read, write, and execute permissions for group (groupname)
+	rwx: Read, write, and execute permissions for others
+	
+5.  Execute the Script (Optional)
+
+Now, you can directly execute the script on App Server 1 using its full path:
+
+#/tmp/xfusioncorp.sh
+
+=====================================================================================================================================================
+
+Example:
+1.ACCESS APPSERVER1
+#ssh tony@stapp01
+password:Ir0nM@n
+
+2.TO CHECK/VERIFY PERMISSION OF FILES
+ls -ld /tmp/xfusioncorp.sh
+
+3.TO GIVE FULL PERMISSION TO the /tmp/xfusioncorp file.
+chmod 777 /tmp/xfusioncorp.sh
+
+4.TO CHECK/VERIFY PERMISSION OF FILES
+ls -ld /tmp/xfusioncorp.sh
+
+5.Execute to scrit
+#/tmp/xfusioncorp.sh
+
+
