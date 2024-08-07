@@ -1,0 +1,165 @@
+QUESTION:
+In the daily standup, it was noted that the timezone settings across the Nautilus Application Servers in the Stratos Datacenter are inconsistent with the local datacenter's timezone, currently set to Pacific/Tongatapu.
+
+Synchronize the timezone settings to match the local datacenter's timezone (Pacific/Tongatapu).
+
+ANSWER:
+
+?Understanding the Problem:
+
+- Nautilus Application Servers in Stratos Datacenter have inconsistent timezones.
+- Target timezone: Pacific/Tongatapu.
+
+Solution:
+
+> Identify Nautilus Application Servers:
+
+- Use your infrastructure management tool (e.g., Puppet, Ansible, Chef) to list all Nautilus Application Servers in the Stratos Datacenter.
+- Manually identify servers if necessary.
+
+> At first login on App server   &  Switch to  root user 
+
+thor@jump_host ~$ ssh tony@stapp01
+tony@stapp01's password:Example@123
+
+[tony@stapp01 ~]$ sudo su -
+[sudo] password for tony:Example@123
+
+[root@stapp01 ~]#
+
+> Check Current Timezone on Each Server:
+SSH into each server and run the following command:
+
+#timedatectl
+Output:
+  Local time: Sat 2021-06-12 15:22:41 UTC
+
+  Universal time: Sat 2021-06-12 15:22:41 UTC
+
+        RTC time: n/a
+
+
+       Time zone: ETC/UTC (UTC, +0000)
+
+     NTP enabled: n/a
+
+NTP synchronized: yes
+
+ RTC in local TZ: no
+
+      DST active: n/a
+
+This will output the current timezone setting.
+
+
+
+> Synchronize Timezone:
+
+If the timezone is incorrect, use the following command to set it to Pacific/Tongatapu:
+
+#sudo timedatectl set-timezone Pacific/Tongatapu
+
+???Note: Replace sudo with the appropriate command to gain root privileges if necessary.
+
+>Verify Timezone Change:
+
+[root@stapp01 ~]# timedatectl
+output:
+  Local time: Sat 2021-06-12 11:25:38 AST
+
+  Universal time: Sat 2021-06-12 15:25:38 UTC
+
+        RTC time: n/a
+
+       Time zone: Pacific/Tongatapu (AST, -0400)
+
+     NTP enabled: n/a
+
+NTP synchronized: yes
+
+ RTC in local TZ: no
+
+      DST active: n/a
+
+
+
+> After running the command, check the timezone again using timedatectl.
+>Verify that the system clock is also adjusted correctly by running date.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Please Note :- You have to do this in all app servers stapp01,stapp02, stapp03. I have Shown only for Stapp01 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+
+Example:
+
+Assuming you have three Nautilus Application Servers: server1, server2, and server3.
+
+Check current timezones:
+
+> On server1:
+
+#ssh user@server1
+#timedatectl
+
+
+> On server2:
+
+#ssh user@server2
+#timedatectl
+
+
+> On server3:
+
+#ssh user@server3
+#timedatectl
+
+
+> Synchronize timezones:
+
+On server1 (assuming incorrect timezone):
+
+#ssh user@server1
+#sudo timedatectl set-timezone Pacific/Tongatapu
+
+
+???Repeat for server2 and server3 if necessary.
+
+>Verify timezone change:
+
+On server1:
+
+#timedatectl
+#date
+
+Repeat for server2 and server3.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Additional Considerations:
+
+NTP Synchronization: Ensure all servers are synchronized with a reliable NTP time server using ntpdate or chronyd to maintain accurate time across the servers.
+Configuration Management: Consider using configuration management tools like Puppet, Ansible, or Chef to automate timezone management and ensure consistency.
+Testing: After changing timezones, test applications and services to verify correct behavior.
+Documentation: Document the changes made to the timezone configuration for future reference.
+Important Note:
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
