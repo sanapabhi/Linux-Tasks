@@ -1,0 +1,49 @@
+QUESTION:
+In alignment with security compliance standards, the Nautilus project team has opted to impose restrictions on crontab access. 
+Specifically, only designated users will be permitted to create or update cron jobs.
+
+Configure crontab access on App Server 2 as follows: Allow crontab access to ravi user while denying access to the jerome user.
+
+ANSWER:
+To configure crontab access on App Server 2, you need to use the cron.allow and cron.deny files. 
+Here are the steps to allow crontab access to the ravi user and deny it to the jerome user:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+1. At first login to all App server  & Switch to  root user
+
+thor@jump_host ~$ ssh tony@stapp01
+tony@stapp01's password:
+
+2.Switch into root user 
+[tony@stapp01 ~]$ sudo su -
+[sudo] password for tony:
+ 
+[root@stapp01 ~]#
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.Open a terminal and switch to the root user:
+
+sudo su -
+
+2.Create or edit the cron.allow file
+
+echo "ravi" >> /etc/cron.allow
+
+3.echo "ravi" >> /etc/cron.allow
+
+echo "jerome" >> /etc/cron.deny
+
+4.Verify the contents of the files
+
+cat /etc/cron.allow
+# Output should be:
+# ravi
+
+cat /etc/cron.deny
+# Output should be:
+# jerome
+
+5.Restart the cron service
+
+systemctl restart crond
