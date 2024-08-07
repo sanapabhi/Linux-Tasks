@@ -1,0 +1,73 @@
+QUESTION:
+In the Stratos Datacenter, our Storage server is encountering performance degradation due to excessive processes held by the nfsuser user. 
+To mitigate this issue, we need to enforce limitations on its maximum processes. Please set the maximum process limits as specified below:
+
+a. Set the soft limit to 1026
+
+b. Set the hard limit to 2024
+
+ANSWER:
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+> To SSH storage server
+thor@jumphost ~$ ssh natashs@ststor01 
+natasha@ststor01's password:
+
+> Switch into root User
+[natasha@ststor01 ~]$ sudo su -
+[sudo] password for natasha:
+
+To install Text Editor as "nano" if you are userfriendly of etc.,(vi,vim,etc,)
+[root@ststor01 ~]# dnf install -y nano
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+UNDERSTANDING THE PROBLEM:
+
+The storage server in the Stratos Datacenter is experiencing performance issues due to an excessive number of processes running under the nfsuser user. 
+To address this, we need to restrict the maximum number of processes this user can create.
+
+Solution:
+
+We will use the limits.conf file to set soft and hard limits for the nfsuser user's process count.
+
+Steps:
+
+1.Edit the limits.conf file:
+
+#sudo nano /etc/security/limits.conf
+
+2.Add the following lines to the file bottom of the configuration
+
+@nfsuser soft nproc 1026
+@nfsuser hard nproc 2024
+
+> @nfsuser: Specifies the user or group. Here, we're targeting all users in the nfsuser group.
+> soft nproc 1026: Sets the soft limit for the number of processes to 1026. The user will receive a warning if they try to exceed this limit.
+> hard nproc 2024: Sets the hard limit for the number of processes to 2024. This is the absolute maximum number of processes the user can create.
+
+3.Save and close the file.
+
+EXPLANATION OF SOFT AND HARD LIMITS:
+
+Soft limit: The user is warned when approaching the soft limit, but can still create more processes.
+Hard limit: This is the absolute maximum number of processes the user can create. The system will prevent the user from creating more processes once this limit is reached.
+
+VERIFICATION:
+
+To verify the changes, you can use the following command:
+
+#cat /etc/security/limits.conf | grep nproc | grep -v ^#
+This will output the hard limit for the number of processes for the nfsuser user.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Additional Considerations:
+
+Group membership: Ensure that the nfsuser user is part of a group named nfsuser.
+System-wide limits: You might need to adjust system-wide process limits as well, depending on your system's configuration.
+Monitoring: Monitor the system's performance after applying the limits to ensure the issue is resolved.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+(((Example: If you have a user named 'john' who belongs to the 'nfsuser' group, the limits you set will apply to this user as well.)))
