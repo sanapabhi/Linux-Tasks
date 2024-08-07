@@ -1,0 +1,93 @@
+QUESTION:
+The Nautilus system admins team has rolled out a web UI application for their backup utility on the Nautilus backup server within the Stratos Datacenter. 
+This application operates on port 3002, and firewalld is active on the server. To meet operational needs, the following requirements have been identified:
+
+Allow all incoming connections on port 3002/tcp. Ensure the zone is set to public.
+
+ANSWER:
+
+UNDERSTANDING THE REQUIREMENTS:
+
+Open port 3002 for TCP traffic.
+Set the firewall zone to 'public'.
+
+ASSUMPTIONS:
+
+You have root privileges on the Nautilus backup server.
+The firewalld service is running and enabled.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Login to Nautilus Backup server
+e.g.,
+thor@jumphost ~$ ssh clint@stbkp01
+clint@stbkp01's password:Example@123
+
+Switch to root user
+[clint@stbkp01 ~]$ sudo su -
+[sudo] password for clint:Example@123
+
+[root@stbkp01 ~]#
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+COMMANDS AND EXPLANATION:
+
+1. Check Firewalld Status:
+
+#sudo systemctl status firewalld
+This command verifies if firewalld is active.
+
+2. List Available Zones:
+
+sudo firewall-cmd --get-active-zones
+This command lists the active firewall zones.
+
+3. Set the Zone to 'public':
+
+sudo firewall-cmd --set-default-zone=public
+This command sets the default zone for new firewall rules to 'public'.
+
+4. Allow Incoming Connections on Port 3002:
+
+sudo firewall-cmd --permanent --zone=public --add-port=3002/tcp
+This command creates a permanent firewall rule to allow incoming connections on port 3002 using TCP.
+
+5. Reload Firewall Rules:
+
+sudo firewall-cmd --reload
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&OR&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+EXAMPLE:
+
+Assuming firewalld is active and the default zone is not 'public', here's a complete example:
+
+# Check firewalld status
+sudo systemctl status firewalld
+
+# List available zones
+sudo firewall-cmd --get-active-zones
+
+# Set the zone to 'public'
+sudo firewall-cmd --set-default-zone=public
+
+# Allow incoming connections on port 3002
+sudo firewall-cmd --permanent --zone=public --add-port=3002/tcp
+
+# Reload firewall rules
+sudo firewall-cmd --reload
+
+EXPLANATION OF COMMANDS:
+
+> sudo systemctl status firewalld: Checks if firewalld is running and active.
+> sudo firewall-cmd --get-active-zones: Lists the currently active firewall zones.
+> sudo firewall-cmd --set-default-zone=public: Sets the default zone for new rules to 'public'.
+> sudo firewall-cmd --permanent --zone=public --add-port=3002/tcp: Creates a permanent rule in the 'public' zone to allow incoming TCP connections on port 3002.
+> sudo firewall-cmd --reload: Reloads the firewall rules to apply the changes.
+This command reloads the firewall rules to apply the changes.
+
+ADDITIONAL CONSIDERATIONS:
+
+If you need to allow access from specific IP addresses, use the --source option with the firewall-cmd command.
+For more complex firewall configurations, consider using the firewall-cmd command with additional options or creating custom firewall rules.
+Always test the firewall configuration in a controlled environment before deploying it to production.
