@@ -1,0 +1,89 @@
+QUESTION:
+With the installation of new tools on the app servers within the Stratos Datacenter, certain functionalities now necessitate graphical user interface (GUI) access.
+
+Adjust the default runlevel on all App servers in Stratos Datacenter to enable GUI booting by default. 
+It's imperative not to initiate a server reboot after completing this task.
+
+ANSWER:
+Understanding the Task:
+
+We need to enable GUI booting on all 3 app servers in Stratos Datacenter.
+The default runlevel needs to be changed.
+No server reboot is allowed after the change.
+
+Assumptions:
+
+The operating system on all app servers is Linux (specifically, a Debian or RedHat-based system).
+The current default runlevel is 3 (text mode).
+The desired runlevel for GUI booting is 5 (graphical mode).
+
+> At first login on all app servers & Switch to  root user
+
+thor@jump_host ~$  ssh tony@stapp01
+tony@stapp01's password:Example@123
+
+
+[tony@stapp01 ~]$ sudo su -
+[sudo] password for tony:
+
+[root@stapp01 ~]#
+
+> Run Below command to check the default run level    
+
+[root@stapp01 ~]# systemctl get-default
+Output:
+multi-user.target
+
+> Run Below command to change the run level to graphical.target
+
+[root@stapp01 ~]# systemctl set-default graphical.target
+Output:
+Removed symlink /etc/systemd/system/default.target.
+
+Created symlink from /etc/systemd/system/default.target to /usr/lib/systemd/system/graphical.target.
+
+
+> Post set default start graphical service & validate  the status
+
+[root@stapp01 ~]# systemctl status graphical.traget
+Output:
+ graphical.target -  Graphical Interface
+
+   Loaded: loaded (/usr/lib/systemd/system/graphical.target; enabled; vendor preset: disabled)
+
+   Active: inactive (dead)
+
+     Docs: man:systemd.special(7)
+	 
+
+>Its initiates the graphical target immediately. This means it switches the current running environment (likely a command line) to the graphical desktop environment.
+[root@stapp01 ~]# systemctl start graphical.target
+
+[root@stapp01 ~]# systemctl status graphical.target
+Output:
+● graphical.target -  Graphical Interface
+
+   Loaded: loaded (/usr/lib/systemd/system/graphical.target; enabled; vendor preset: disabled)
+
+   Active: active since Thu 2021-06-24 15:39:28 UTC; 1s ago
+
+     Docs: man:systemd.special(7)
+
+ Jun 24 15:39:28 stapp01.stratos.xfusioncorp.com systemd[1]: Job graphical.target/start finished,...e
+
+Jun 24 15:39:28 stapp01.stratos.xfusioncorp.com systemd[1]: Reached target  Graphical Interface.
+
+Hint: Some lines were ellipsized, use -l to show in full.
+
+
+[root@stapp01 ~]# systemctl get-default
+Output:
+graphical.target
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Please Note :- 
+I have showed only for stapp01. 
+You have to do this in all  app server  stapp01,stapp02, stapp03. 
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
