@@ -1,0 +1,201 @@
+QUESTION:
+Within the Stratos DC, the backup server holds template XML files crucial for the Nautilus application. 
+Before utilization, these files require valid data insertion. As part of routine maintenance, 
+system admins at xFusionCorp Industries employ string and file manipulation commands.
+
+Your task is to substitute all occurrences of the string String with LUSV within the XML file located at /root/nautilus.xml on the backup server.
+
+Answer:
+
+UNDERSTANDING THE TASK:
+ssh to backup server
+We need to replace the string "String" with "LUSV" within the file /root/nautilus.xml.
+The file is located on a backup server within the Stratos DC.
+clint = Backup server
+
+SOLUTION: USING THE SED COMMAND
+
+The sed command is a powerful tool for editing text streams. It can be used to perform a wide range of text manipulations, including substitutions.
+
+COMMAND:
+
+>Assuming you have SSH access to the backup server, you would first connect to the server using the ssh command:
+
+#ssh user@backup_server_ip
+
+>Switch to root user
+[clint@stbkp01 ~]$ sudo su
+[sudo] password for clint: ??????????
+
+To verify the changes, you can use the cat command to display the contents of the file:
+
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep String
+Output:
+<string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+      <string>String</string>
+
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep String | wc -l
+Output:66
+
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep LUSV | wc -l
+Output: Blank
+
+Once you're logged in, execute the sed command:
+
+[root@stbkp01 clint]# sed -i 's/String/LUSV/g' /root/nautilus.xml 
+
+EXPLANATION:
+
+	>sed: Invokes the stream editor.
+	>-i: Indicates in-place editing, meaning the changes will be made directly to the file.
+	>'s/String/LUSV/g': This is the substitution command.
+	>s: Substitute command.
+	>String: The pattern to be replaced.
+	>LUSV: The replacement string.
+	>g: Global flag, replaces all occurrences in the line.
+
+To verify the changes, you can use the cat command to display the contents of the file:
+
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep LUSV
+Output:
+<string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+      <string>LUSV</string>
+	  
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep LUSV | wc -l
+Output:66
+
+[root@stbkp01 clint]# cat /root/nautilus.xml | grep String | wc -l
+Output:0
+
+
+
+
+

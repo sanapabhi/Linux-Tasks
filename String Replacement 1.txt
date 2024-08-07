@@ -1,0 +1,59 @@
+QUESTION:
+Within the Stratos DC, the backup server holds template XML files crucial for the Nautilus application. 
+Before utilization, these files require valid data insertion. As part of routine maintenance, system admins at xFusionCorp Industries employ string and file manipulation commands.
+
+Your task is to substitute all occurrences of the string Text with Echo-Location within the XML file located at /root/nautilus.xml on the backup server.
+
+ANSWER:
+
+UNDERSTANDING THE TASK:
+
+We need to replace the string "Text" with "Echo-Location" within the file /root/nautilus.xml.
+The file is located on a backup server within the Stratos DC.
+
+SOLUTION: USING THE SED COMMAND
+
+The sed command is a powerful tool for editing text streams. It can be used to perform a wide range of text manipulations, including substitutions.
+
+COMMAND:
+
+#sed -i 's/Text/Echo-Location/g' /root/nautilus.xml
+
+EXPLANATION:
+
+	>sed: Invokes the stream editor.
+	>-i: Indicates in-place editing, meaning the changes will be made directly to the file.
+	>'s/Text/Echo-Location/g': This is the substitution command.
+	>s: Substitute command.
+	>Text: The pattern to be replaced.
+	>Echo-Location: The replacement string.
+	>g: Global flag, replaces all occurrences in the line.
+
+EXAMPLE:
+
+Assuming you have SSH access to the backup server, you would first connect to the server using the ssh command:
+
+#ssh user@backup_server_ip
+
+Replace user with your username and backup_server_ip with the actual IP address of the backup server.
+
+Once you're logged in, execute the sed command:
+
+#sudo sed -i 's/Text/Echo-Location/g' /root/nautilus.xml
+
+You will be prompted for the sudo password. Enter the password to proceed.
+
+VERIFICATION:
+
+To verify the changes, you can use the cat command to display the contents of the file:
+
+#cat /root/nautilus.xml
+
+Search for the string "Text" to ensure it has been replaced with "Echo-Location".
+
+Additional Considerations:
+
+Backup: It's always recommended to create a backup of the file before making any modifications.
+Permissions: Ensure you have the necessary permissions to edit the file.
+XML Validation: If the XML structure is critical, consider using an XML-aware tool or validating the file after the substitution to ensure its integrity.
+Regular Expressions: The sed command supports regular expressions, allowing for more complex pattern matching and replacement.
