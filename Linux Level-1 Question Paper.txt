@@ -1,0 +1,449 @@
+1.After conducting comprehensive security audits on its servers, xFusionCorp Industries security team has instituted several new security measures. 
+Among these measures is the discontinuation of direct root login through SSH.
+
+Disable direct SSH root login across all application servers located in the Stratos Datacenter.
+
+Answer:
+Steps to Disable Direct SSH Root Login
+1.Connect to Each Application Server:
+Use SSH to connect to each application server as a user with administrative privileges. For example:
+#ssh user@server_address
+
+2.Edit the SSH Configuration File:
+Open the SSH server configuration file using a text editor like vi or nano. For example:
+#sudo vi /etc/ssh/sshd_config
+
+3.Locate the PermitRootLogin Directive:
+Search for the line containing PermitRootLogin. It might be commented out with a # at the beginning.
+#PermitRootLogin yes
+
+4.Modify the PermitRootLogin Directive:
+Uncomment the line by removing the # and change the value from yes to no:
+PermitRootLogin no
+
+5.Save and Exit the Editor:
+Save the changes and exit the text editor. In vi, you can do this by pressing Esc, typing :wq, and then pressing Enter.
+
+6.Restart the SSH Service:
+Apply the new configuration by restarting the SSH service:
+#sudo systemctl restart sshd
+
+===============================================================================================================================================================
+
+2.The system admins at Nautilus have developed scripts to automate routine tasks. 
+Their objective is to deploy these scripts on all app servers within Stratos DC following a defined schedule. 
+However, before the full deployment, they aim to conduct a test using a sample cron job.
+
+Please add the cron job */5 * * * * echo hello > /tmp/cron_text (ensure the cron expression matches exactly) for the root user.
+
+Answer:
+Steps to Add the Cron Job
+
+1.Open the root user’s crontab file:
+#sudo crontab -e        OR #sudo vim/etc/crontab
+
+2.Add the cron job: At the end of the crontab file, add the following line:
+*/5 * * * * echo hello > /tmp/cron_text
+
+3.Save and exit:
+If you’re using the vi editor, press Esc, type :wq, and press Enter.
+If you’re using the nano editor, press Ctrl+X, then Y, and Enter.
+
+>Explanation
+*/5 * * * *: This cron expression means the command will run every 5 minutes.
+echo hello > /tmp/cron_text: This command will output the text “hello” to the file /tmp/cron_text.
+
+===============================================================================================================================================================
+
+3.One user needs to be created on an app server in Stratos Datacenter. The system admins team has shared more details below regarding the same.
+
+a. The user name should be mohammed on App server 2 in Stratos Datacenter.
+b. Set its UID to 1332 and home directory to /opt/mohammed (you can create this directory if it doesn't exist).
+c. Also create a group named nautilus_sftp_users on App server 2 in Stratos Datacenter. Add the user mohammed to the nautilus_sftp_users group.
+
+Answer:
+1.SSH into App Server 2:
+#ssh your_username@app_server_2
+
+2.Create the user mohammed with UID 1332 and home directory /opt/mohammed:
+#sudo useradd -u 1332 -d /opt/mohammed -m mohammed
+
+-u 1332: Sets the UID to 1332.
+-d /opt/mohammed: Sets the home directory to /opt/mohammed.
+-m: Creates the home directory if it doesn’t exist.
+
+3.Create the group nautilus_sftp_users:
+#sudo groupadd nautilus_sftp_users
+
+4.Add the user mohammed to the group nautilus_sftp_users:
+#sudo usermod -aG nautilus_sftp_users mohammed
+
+===============================================================================================================================================================
+
+
+4.The security team detected some directories/files with inappropriate permissions on one of the app servers in Stratos Datacenter. 
+Fix the permissions as per details given below:
+
+There is a directory named /usr/share/data on App server 2 in Stratos Datacenter, change its permissions to 700.
+
+Answer:
+1.SSH into App Server 2:
+Open your terminal.
+Connect to App Server 2 using SSH. Replace username with your actual username.
+#ssh username@appserver2
+
+2.Change the directory permissions:
+Once connected, change the permissions of the /usr/share/data directory to 700 using the chmod command.
+#sudo chmod 700 /usr/share/data
+
+3.Verify the permissions:
+Check if the permissions have been updated correctly.
+#ls -ld /usr/share/data
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Example:
+Here’s a detailed example of how the commands would look:
+
+# Step 1: SSH into App Server 2
+ssh john@appserver2
+
+# Step 2: Change the directory permissions
+sudo chmod 700 /usr/share/data
+
+# Step 3: Verify the permissions
+ls -ld /usr/share/data
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Explanation:
+ssh username@appserver2: This command connects you to App Server 2.
+sudo chmod 700 /usr/share/data: This command changes the permissions of the /usr/share/data directory to 700, which means:
+7 (rwx): The owner has read, write, and execute permissions.
+0 (—): The group has no permissions.
+0 (—): Others have no permissions.
+ls -ld /usr/share/data: This command lists the details of the directory, including its permissions, to verify the change.
+
+===============================================================================================================================================================
+
+5.Some directories and files needed to be created on an app server in Stratos Datacenter. Complete this task as per the details mentioned below:
+
+Create a directory named /opt/sysops on App server 2 in Stratos Datacenter.
+Further, create a blank file named /opt/sysops/sysops.txt .
+
+Answer:
+
+1.Connect to App Server 2: 
+First, you need to connect to App server 2. You can use SSH (Secure Shell) to do this. Replace username and app_server_2_ip with the actual username and IP address of App server 2.
+#ssh username@app_server_2_ip
+
+2.Create the Directory: 
+Once connected, create the directory /opt/sysops using the mkdir command. The -p option ensures that no error is thrown if the directory already exists.
+#sudo mkdir -p /opt/sysops
+
+3.Create the Blank File:
+Next, create a blank file named sysops.txt inside the /opt/sysops directory using the touch command.
+#sudo touch /opt/sysops/sysops.txt
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Example with Details
+Let’s go through an example step-by-step:
+
+Connect to App Server 2:
+ssh john_doe@192.168.1.10
+
+Create the Directory:
+sudo mkdir -p /opt/sysops
+
+sudo: Runs the command with superuser privileges.
+mkdir: Command to create directories.
+-p: Creates parent directories as needed.
+Create the Blank File:
+sudo touch /opt/sysops/sysops.txt
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sudo: Runs the command with superuser privileges.
+touch: Command to create an empty file.
+
+===============================================================================================================================================================
+
+6.The development team requires specific logs stored within the Nautilus storage server situated in the Stratos DC. 
+Access the designated location on the server to retrieve the necessary logs. Further, perform below actions:
+
+Create a tar archive named logs.tar (under natasha's home) of /var/log/ directory.
+Now, create a compressed tar archive as well named logs.tar.gz (under natasha's home) of /var/log/ directory.
+
+Answer:
+
+1.Access the Nautilus storage server:
+Open your terminal and connect to the Nautilus storage server using SSH (replace username and server_address with the actual username and server address):
+#ssh username@server_address
+
+2.Navigate to the /var/log/ directory:
+Change to the /var/log/ directory where the logs are stored:
+#cd /var/log/
+
+3.Create a tar archive named logs.tar in Natasha’s home directory:
+Use the tar command to create an archive of the /var/log/ directory and save it as logs.tar in Natasha’s home directory:
+#tar -cvf /home/natasha/logs.tar /var/log/
+
+Explanation:
+tar: The command to create tar archives.
+-c: Create a new archive.
+-v: Verbose mode, shows the progress in the terminal.
+-f: Specifies the name of the archive file.
+/home/natasha/logs.tar: The path where the archive will be saved.
+/var/log/: The directory to be archived.
+
+4.Create a compressed tar archive named logs.tar.gz in Natasha’s home directory:
+Use the tar command with gzip compression to create a compressed archive of the /var/log/ directory and save it as logs.tar.gz in Natasha’s home directory:
+#tar -czvf /home/natasha/logs.tar.gz /var/log/
+
+Explanation:
+tar: The command to create tar archives.
+-c: Create a new archive.
+-z: Compress the archive using gzip.
+-v: Verbose mode, shows the progress in the terminal.
+-f: Specifies the name of the archive file.
+/home/natasha/logs.tar.gz: The path where the compressed archive will be saved.
+/var/log/: The directory to be archived.
+
+===============================================================================================================================================================
+
+7.There is some data on Nautilus App Server 2 in Stratos DC. Data needs to be altered in some of the files. 
+On Nautilus App Server 2, alter the /home/BSD.txt file as per details given below.
+
+a. Delete all lines containing the word following and save the results in /home/BSD_DELETE.txt file. (Please be aware of case sensitivity)
+b. Replace all occurrences of the word or (look for the exact match) with them and save the results in /home/BSD_REPLACE.txt file.
+Note: Let's say you are asked to replace the word to with from. In that case, make sure not to alter any words containing the string itself, for example; upto, contributor etc.
+
+Answer:
+
+TASK A: DELETE ALL LINES CONTAINING THE WORD “FOLLOWING” AND SAVE THE RESULTS IN /HOME/BSD_DELETE.TXT
+
+1.Command:
+sed '/following/d' /home/BSD.txt > /home/BSD_DELETE.txt
+
+2.Explanation:
+sed: Stream editor for filtering and transforming text.
+'/following/d': This part tells sed to delete (d) all lines containing the exact word “following”.
+/home/BSD.txt: The input file.
+> /home/BSD_DELETE.txt: Redirects the output to a new file named /home/BSD_DELETE.txt.
+
+
+
+TASK B: REPLACE ALL OCCURRENCES OF THE WORD “OR” WITH “THEM” AND SAVE THE RESULTS IN /HOME/BSD_REPLACE.TXT
+
+1.Command:
+sed 's/\bor\b/them/g' /home/BSD.txt > /home/BSD_REPLACE.txt
+
+2.Explanation:
+sed: Stream editor for filtering and transforming text.
+'s/\bor\b/them/g': This part tells sed to substitute (s) the exact word “or” (\bor\b) with “them” globally (g).
+\b: Word boundary to ensure exact match.
+/home/BSD.txt: The input file.
+> /home/BSD_REPLACE.txt: Redirects the output to a new file named /home/BSD_REPLACE.txt.
+
+Example with Details
+Let’s assume the content of /home/BSD.txt is as follows:
+
+This is a sample text file.
+It contains the word following in some lines.
+We need to delete lines with the word following.
+Also, we need to replace the word or with them.
+This is an example or test.
+
+AFTER TASK A:
+The content of /home/BSD_DELETE.txt will be:
+-->
+This is a sample text file.
+Also, we need to replace the word or with them.
+This is an example or test.
+
+AFTER TASK B:
+The content of /home/BSD_REPLACE.txt will be:
+-->
+This is a sample text file.
+It contains the word following in some lines.
+We need to delete lines with the word following.
+Also, we need to replace the word them with them.
+This is an example them test.
+
+===============================================================================================================================================================
+
+8.The Nautilus system admins team recently deployed a web UI application for their backup utility running on the Nautilus backup server in Stratos Datacenter. 
+The application is running on port 8088. They have a firewalld installed on that server. 
+The requirements that have come up include the following:
+
+Open all incoming connections on 8088/tcp port, zone should be public.
+
+Answer:
+
+1.Open the terminal on the Nautilus backup server.
+
+2.Run the following command to add the port 8088/tcp to the public zone:
+
+#sudo firewall-cmd --zone=public --add-port=8088/tcp --permanent
+
+--zone=public: Specifies the zone to which the rule should be added.
+--add-port=8088/tcp: Specifies the port and protocol to be opened.
+--permanent: Makes the rule persistent across reboots.
+
+3.Reload the firewall to apply the changes:
+#sudo firewall-cmd --reload
+
+4.Verify the rule to ensure it has been added correctly:
+#sudo firewall-cmd --zone=public --list-ports
+This command should list 8088/tcp among the open ports.
+
+EXAMPLE --->
+
+Here’s an example of how the commands would look in the terminal:
+
+$ sudo firewall-cmd --zone=public --add-port=8088/tcp --permanent
+success
+$ sudo firewall-cmd --reload
+success
+$ sudo firewall-cmd --zone=public --list-ports
+8088/tcp
+
+This will open port 8088/tcp for incoming connections in the public zone, allowing your web UI application to be accessible.
+
+===========================================================================================================================================================
+
+9.The xFusionCorp Industries security team recently did a security audit of their infrastructure and came up with some ideas to improve the application and server security. 
+They decided to use SElinux for an additional security layer. They are still planning how they will implement it, however, they have decided to start testing with app servers, so based on the recommendations they have the following requirements:
+
+Install the required packages of SElinux on App server 2 in Stratos Datacenter and disable it permanently for now, it will be enabled after making some required configuration changes on this host. 
+Don't worry about rebooting the server as there is already a reboot scheduled during tonight's maintenance window. Also ignore the status of the SElinux command line right now; the final status after reboot should be disabled.
+
+Answer:
+
+1.Log in to App server 2:
+#ssh username@appserver2
+
+2.Switch to the root user:
+#sudo su -
+
+3.Install SELinux packages:
+#yum install -y selinux-policy selinux-policy-targeted
+
+4.Disable SELinux permanently:
+Open the SELinux configuration file:
+#vi /etc/selinux/config
+
+Change the SELINUX directive to disabled:
+SELINUX=disabled
+
+5.Verify the changes:
+Save and close the file, then check the SELinux status:
+#sestatus
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+HERE IS A DETAILED EXAMPLE:
+
+1.Log in to App server 2:
+ssh tony@appserver2
+
+2.Switch to the root user:
+sudo su -
+
+3.Install SELinux packages:
+yum install -y selinux-policy selinux-policy-targeted
+
+4.Disable SELinux permanently:
+Open the SELinux configuration file:
+vi /etc/selinux/config
+
+Change the SELINUX directive to disabled:
+SELINUX=disabled
+
+5.Verify the changes:
+Save and close the file, then check the SELinux status:
+sestatus
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+After the server reboots during the maintenance window, SELinux will be disabled as required
+
+===============================================================================================================================================================
+
+10.As per a new application requirements shared by the Nautilus application development team, several new packages need to be installed on all app servers in Stratos Datacenter. 
+Most of them are installed except net-tools.
+
+Therefore, install the net-tools package on all app servers in Stratos Datacenter.
+
+Answer:
+
+Understanding the Task:
+
+Install the net-tools package on all application servers in the Stratos Datacenter.
+Assume a Linux-based system (likely RHEL/CentOS or Debian/Ubuntu).
+We'll use SSH for remote execution and yum or apt for package management, depending on the distribution.
+Assumptions:
+
+You have SSH access to all app servers with a user having sudo privileges.
+You have a list of all app server hostnames or IP addresses.
+The package repositories are configured correctly on all servers.
+Steps:
+
+1.Create a List of App Servers:
+
+Gather a list of all app server hostnames or IP addresses. For example, create a text file named app_servers.txt with one hostname per line:
+server1.example.com
+server2.example.com
+server3.example.com
+
+2.Write a Script (e.g., install_net_tools.sh):
+
+#!/bin/bash
+
+# Replace 'your_username' with your actual username
+ssh_user=your_username
+
+while read server; do
+    ssh $ssh_user@$server "sudo yum install -y net-tools" || ssh $ssh_user@$server "sudo apt install -y net-tools"
+done < app_servers.txt
+Use code with caution.
+
+This script iterates through the list of servers in app_servers.txt.
+It uses ssh to connect to each server, then executes the package installation command using sudo.
+The || operator handles both RHEL/CentOS (using yum) and Debian/Ubuntu (using apt) systems.
+
+3.Make the Script Executable:
+
+#chmod +x install_net_tools.sh
+
+4.Run the Script:
+
+./install_net_tools.sh
+
+
+Explanation:
+
+The script reads the list of servers from app_servers.txt.
+For each server, it establishes an SSH connection using the specified username.
+It executes the package installation command with sudo privileges.
+The -y flag automatically answers "yes" to any prompts.
+Important Considerations:
+
+Error Handling: Consider adding error handling to the script to log failed installations or send notifications.
+Non-Interactive Mode: The -y flag is used for convenience but might not be suitable in all environments.
+Security: Ensure proper SSH key-based authentication or passwordless login for security.
+Package Manager: Verify the correct package manager (yum or apt) for your system.
+Testing: Test the script on a single server before running it on all servers.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+OR
+to acess all appservers via ssh 
+e.g.,
+ssh tony@stapp01
+password:Ir0nM@n
+
+To switch into root user
+
+$sudo su -
+Password:Ir0nM@n
+
+#yum Install net-tools -y
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+===============================================================================================================================================================
