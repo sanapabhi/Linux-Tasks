@@ -1,0 +1,99 @@
+QUESTION:
+
+Following a security audit, the xFusionCorp Industries security team has opted to enhance application and server security with SELinux. 
+To initiate testing, the following requirements have been established for App server 1 in the Stratos Datacenter:
+
+1.Install the required SELinux packages.
+
+2.Permanently disable SELinux for the time being; it will be re-enabled after necessary configuration changes.
+
+3.No need to reboot the server, as a scheduled maintenance reboot is already planned for tonight.
+
+4.Disregard the current status of SELinux via the command line; the final status after the reboot should be disabled.
+
+ANSWER:
+UNDERSTANDING THE TASK
+
+Before we proceed, it's crucial to understand the implications of disabling SELinux. 
+While it's a necessary step for initial testing, SELinux provides robust security measures. 
+Disabling it completely exposes the system to potential vulnerabilities. 
+Hence, it's essential to re-enable it with appropriate configurations as soon as possible.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1. At first login to / SSH to App server 1  & Switch to  root user
+
+thor@jump_host ~$ ssh tony@stapp01
+tony@stapp01's password:
+
+2.Switch into root user 
+[tony@stapp01 ~]$ sudo su -
+[sudo] password for tony:
+ 
+[root@stapp01 ~]#
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1. INSTALL THE REQUIRED SELINUX PACKAGES
+
+First, you need to install the SELinux packages. You can do this using the yum package manager (for CentOS/RHEL) or apt (for Debian/Ubuntu).
+
+For CentOS/RHEL:
+
+#sudo yum install selinux-policy selinux-policy-targeted
+
+For Debian/Ubuntu:
+
+#sudo apt-get install selinux-basics selinux-policy-default
+
+2. PERMANENTLY DISABLE SELINUX
+
+To permanently disable SELinux, you need to edit the SELinux configuration file.
+
+Open the SELinux configuration file in a text editor:
+
+#sudo vi /etc/selinux/config
+
+Change the SELINUX directive to disabled in configuration file:
+
+>>SELINUX=disabled
+
+Save and close the file.
+
+3. APPLY THE CHANGES WITHOUT REBOOTING
+
+To apply the changes without rebooting, you can set SELinux to permissive mode temporarily. This will allow you to make the necessary changes without enforcing SELinux policies.
+
+Set SELinux to permissive mode:
+
+#sudo setenforce 0
+
+4. VERIFY THE CURRENT STATUS OF SELINUX
+
+You can check the current status of SELinux using the following command:
+
+#sestatus
+
+After the scheduled maintenance reboot, SELinux will be permanently disabled as per the configuration changes made in the /etc/selinux/config file.
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&OR&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Example
+Here is a complete example of the commands:
+
+# Install SELinux packages
+sudo yum install selinux-policy selinux-policy-targeted
+
+# Edit SELinux configuration file
+sudo vi /etc/selinux/config
+# Change SELINUX=disabled
+
+# Set SELinux to permissive mode
+sudo setenforce 0
+
+# Verify SELinux status
+sestatus
+
+After the reboot, you can verify that SELinux is disabled by running sestatus
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
